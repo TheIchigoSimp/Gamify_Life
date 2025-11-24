@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/auth.routes.js";
+import taskRoutes from "./src/routes/task.routes.js";
 
 dotenv.config();
 connectDB();
@@ -22,14 +23,14 @@ app.use(cors(
 ));
 
 app.use("/auth", authRoutes);
+app.use("/tasks", taskRoutes);
 
 //API Route
 app.get("/api/message", (req, res)=>{
     res.json({message: "Hello from server"})
 });
 
-const PORT = 4000
-app.listen(PORT, ()=>{
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(process.env.PORT, ()=>{
+    console.log(`Server is running on http://localhost:${process.env.PORT}`);
     
 });
