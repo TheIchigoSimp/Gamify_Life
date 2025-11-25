@@ -86,4 +86,26 @@ async function deleteTask(req, res) {
 
 };
 
-export { createTask, getTasks, updateTask, deleteTask };
+async function toggleTaskCompletion(req, res) {
+    const { id } = req.params;
+
+    const task = await Task.findById(id);
+    if(!task) {
+        return res.status(404).json({ message: "Task not found" }); 
+    }
+
+    if (task.userId.toString() !== req.user.id) {
+        return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    try {
+        task.completed = !task.completed;
+    } catch (error) {
+        return res.status(401).json({ message: "Server error.", error: error.message });
+    }
+
+    await task.save();
+    return res.status(200).json({ message: "Task updated", task });    
+}
+
+export { createTask, getTasks, updateTask, deleteTask, toggleTaskCompletion };

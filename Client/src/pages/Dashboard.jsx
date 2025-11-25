@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Tasks from "./Tasks";
 
 export default function Dashboard() {
-
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -13,31 +13,49 @@ export default function Dashboard() {
     };
 
     return (
-         <div style={{ padding: "20px" }}>
-            {/* Navbar */}
-            <div 
+        <div style={{ display: "flex", height: "100vh" }}>
+
+            {/* ---------- Sidebar ---------- */}
+            <div
                 style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "30px",
-                    padding: "10px 0",
-                    borderBottom: "1px solid #ddd"
+                    width: "220px",
+                    background: "#f3f3f3",
+                    padding: "20px",
+                    borderRight: "1px solid #ddd"
                 }}
             >
-                <h2>GamifyLife Dashboard</h2>
-                <button onClick={handleLogout}>Logout</button>
+                <h2>GamifyLife</h2>
+
+                <div style={{ marginTop: "40px" }}>
+                    <p><strong>User:</strong></p>
+                    <p style={{ color: "purple" }}>
+                        {user?.info?.name || user?.info?.email}
+                    </p>
+                </div>
+
+                <button
+                    onClick={handleLogout}
+                    style={{
+                        marginTop: "60px",
+                        padding: "10px",
+                        width: "100%",
+                        cursor: "pointer"
+                    }}
+                >
+                    Logout
+                </button>
             </div>
 
-            {/* Welcome Section */}
-            <h3>
-                Welcome,{` `}
-                <span style={{ color: "purple" }}>
-                    {user?.info?.name || user?.info?.email || "Player"}
-                </span>
-            </h3>
+            {/* ---------- Main Content ---------- */}
+            <div style={{ flex: 1, padding: "30px" }}>
+                <h2>Dashboard</h2>
+                <p>Welcome back, {user?.info?.name || "Player"} 👋</p>
 
-            <p>Your tasks will appear here soon.</p>
+                {/* Tasks Section */}
+                <div style={{ marginTop: "40px" }}>
+                    <Tasks />
+                </div>
+            </div>
         </div>
     );
 }
